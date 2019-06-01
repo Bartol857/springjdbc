@@ -16,6 +16,12 @@ public class Main {
             System.out.println(customer);
         }
 
+//        Customer customer = new Customer(5, "nowy użytkownik",52);
+//        dao.insert();
+
+//        dao.delete(5);
+
+
 
     }
 }

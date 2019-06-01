@@ -52,5 +52,56 @@ public class CustomerDaoImpl implements CustomerDao {
         }
     }
 
+    @Override
+    public void insert(Customer customer){
+        String sql = "INSERT INTO CUSTOMER " +
+                "(CUST_ID, NAME, AGE) VALUES (?, ?, ?)";
+        Connection conn = null;
+
+        try {
+            conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, customer.getCustId());
+            ps.setString(2, customer.getName());
+            ps.setInt(3, customer.getAge());
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {}
+            }
+        }
+    }
+
+    @Override
+    public void delete(int custId){
+        String sql = "DELETE FROM CUSTOMER WHERE Cust_Id=?";
+        Connection conn = null;
+
+        try {
+            conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, custId);
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {}
+            }
+        }
+    }
+
 
 }
