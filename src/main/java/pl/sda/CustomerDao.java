@@ -9,4 +9,6 @@ public interface CustomerDao {
     public void insert(Customer customer);
 
     public void delete(int custId);
+
+    List<Customer> findAllJdbcTemplate();
 }

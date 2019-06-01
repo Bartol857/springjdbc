@@ -1,9 +1,12 @@
 package pl.sda;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,10 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CustomerDaoImpl implements CustomerDao {
+public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Autowired
     private DriverManagerDataSource dataSource;
+
+    @PostConstruct
+    public void init() {
+        setDataSource(dataSource);
+    }
 
     @Override
     public List<Customer> findAll() {
@@ -101,6 +109,16 @@ public class CustomerDaoImpl implements CustomerDao {
                 } catch (SQLException e) {}
             }
         }
+    }
+
+    @Override
+    public List<Customer> findAllJdbcTemplate(){
+        String sql = "SELECT * FROM CUSTOMER";
+
+        List<Customer> customers = (List<Customer>)getJdbcTemplate().query(
+                sql, new BeanPropertyRowMapper(Customer.class));
+
+        return customers;
     }
 
 
